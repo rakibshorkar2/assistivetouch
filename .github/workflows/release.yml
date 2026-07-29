@@ -1,0 +1,68 @@
+name: Auto Release on Push
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump version
+        id: bump
+        run: |
+          BUILD_FILE="app/build.gradle.kts"
+
+          versionCode=$(grep -oP 'versionCode\s*=\s*\K\d+' "$BUILD_FILE")
+          versionName=$(grep -oP 'versionName\s*=\s*"\K[^"]+' "$BUILD_FILE")
+
+          echo "Current: versionCode=$versionCode, versionName=$versionName"
+
+          newVersionCode=$((versionCode + 1))
+
+          IFS='.' read -r major minor patch <<< "$versionName"
+          patch=${patch:-0}
+          newPatch=$((patch + 1))
+          newVersionName="$major.$minor.$newPatch"
+
+          echo "New: versionCode=$newVersionCode, versionName=$newVersionName"
+
+          sed -i "s/versionCode = $versionCode/versionCode = $newVersionCode/" "$BUILD_FILE"
+          sed -i "s/versionName = \"$versionName\"/versionName = \"$newVersionName\"/" "$BUILD_FILE"
+
+          echo "versionCode=$newVersionCode" >> $GITHUB_OUTPUT
+          echo "versionName=$newVersionName" >> $GITHUB_OUTPUT
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add app/build.gradle.kts
+          git commit -m "Bump version to ${{ steps.bump.outputs.versionName }}"
+          git tag "v${{ steps.bump.outputs.versionName }}"
+          git push origin master --tags
+
+      - name: Build APK
+        run: |
+          echo "Building APK..."
+          # Uncomment the next line if you have a real build step:
+          # ./gradlew assembleRelease
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.bump.outputs.versionName }}
+          name: Release v${{ steps.bump.outputs.versionName }}
+          body: |
+            ## Auto-generated Release
+
+            - **Version:** ${{ steps.bump.outputs.versionName }}
+            - **Version Code:** ${{ steps.bump.outputs.versionCode }}
+          generate_release_notes: true
