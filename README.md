@@ -1,66 +1,147 @@
-# Volume Assistant — Complete Android Kotlin Floating Volume Control App
+<div align="center">
 
-A modern, high-performance Android application built with Kotlin, Jetpack Compose, and Material Design 3 that provides a floating system volume control assistant (similar to AssistiveTouch).
+# 🎛️ Volume Assistant
 
-## Key Features
+### *Floating System Volume Control — Like AssistiveTouch for Android*
 
-* **Persistent Floating Overlay Button**:
-  * Draggable circular button (`WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY`) that stays visible over other apps.
-  * Drag gesture vs. tap/double-tap/long-press gesture detection.
-  * Configurable edge-snap behavior (automatically snaps to left/right screen edge on release).
-  * Remembers last screen position using Jetpack DataStore.
+<br>
 
-* **Compact Volume Control Popup Overlay**:
-  * Opens intelligently near the floating button (auto-detects left/right/top/bottom placement to prevent offscreen clipping).
-  * Audio Stream Switcher: Instant switching between **Media**, **Ring**, **Notification**, **Alarm**, and **Call** streams.
-  * Real-time volume percentage indicator synchronized with physical device volume buttons.
-  * Volume decrement (`-`), volume slider, volume increment (`+`), and mute/unmute controls.
-  * Auto-close popup timer (3s, 5s, 10s, or disabled) and tap-outside-to-dismiss.
+![Kotlin](https://img.shields.io/badge/Kotlin-2.2+-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)
+![Material 3](https://img.shields.io/badge/Material%20Design%203-0066FF?style=for-the-badge&logo=materialdesign&logoColor=white)
+![API](https://img.shields.io/badge/Min%20API-26-4CAF50?style=for-the-badge&logo=android&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-FF5722?style=for-the-badge)
 
-* **Customizable Gestures**:
-  * Single Tap, Double Tap, and Long Press actions:
-    * Open Volume Popup
-    * Volume Up (+1)
-    * Volume Down (-1)
-    * Mute / Unmute
-    * Open Settings
-    * Disabled
+<br>
 
-* **Foreground Service & Boot Restoration**:
-  * `FloatingVolumeService`: Persistent foreground service with low battery impact.
-  * `BootReceiver`: Optionally restores floating assistant after device restarts (`RECEIVE_BOOT_COMPLETED`).
-  * Notification Channel with quick control and stop actions.
+```
+╔══════════════════════════════════════════════════╗
+║                                                  ║
+║   ██╗   ██╗ ██████╗ ██╗     ██╗   ██╗███╗   ███╗║
+║   ██║   ██║██╔═══██╗██║     ██║   ██║████╗ ████║║
+║   ██║   ██║██║   ██║██║     ██║   ██║██╔████╔██║║
+║   ╚██╗ ██╔╝██║   ██║██║     ██║   ██║██║╚██╔╝██║║
+║    ╚════╝  ╚██████╔╝███████╗╚██████╔╝██║ ╚═╝ ██║║
+║     ╚═══╝   ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝     ╚═╝║
+║                                                  ║
+║   ▄▄█▀▀▀▄█▄                                      ║
+║   ▐▌▐▌  ▐▌ ▀▄   ▄█▀▀▀▄▄   ▄▀█▄  ▄▀█▄  ▄█▀▀▀▄▄   ║
+║   ▐▌▐▌  ▐▌  ▀▄ ▐▌    ▀▀ ▐▌  ▐▌▐▌  ▐▌▐▌    ▀▀   ║
+║   ▐▌▐▌  ▐▌▄▄▄▀▀ ▀█▄▄▄▄▀  ▀▄▄▀▀ ▀▄▄▀▀ ▀█▄▄▄▄▀   ║
+║                                                  ║
+╚══════════════════════════════════════════════════╝
+```
 
-* **Modern Dashboard & Settings Screen**:
-  * Live status overview (Assistant state, SYSTEM_ALERT_WINDOW permission status, Notification permission status).
-  * Interactive live stream test sliders.
-  * Device-specific battery optimization guide (for Samsung OneUI, Xiaomi MIUI, Pixel, etc.).
-  * Comprehensive Settings screen for sizes, opacity, theme (System, Light, Dark), gestures, and haptic feedback.
+<br>
 
 ---
 
-## Tech Stack & Architecture
+## ✨ Features
 
-* **Language**: Kotlin 2.2+
-* **UI**: Jetpack Compose, Material Design 3
-* **Architecture**: MVVM with Coroutines & StateFlow
-* **Data Persistence**: Jetpack DataStore Preferences
-* **Audio Control**: Android `AudioManager` with `Settings.System.CONTENT_URI` ContentObserver
-* **Overlay Engine**: Android `WindowManager` with ComposeView hosting
+<table>
+<tr>
+<td width="50%">
+
+### 🟢 Floating Overlay
+- Draggable circular button overlay
+- Smart edge-snap (left/right)
+- Double-tap & long-press gestures
+- Remembers position via DataStore
+
+</td>
+<td width="50%">
+
+### 🔊 Volume Popup
+- Compact popup near the button
+- Switch between Media / Ring / Alarm / Call
+- Slider + increment / decrement buttons
+- Auto-dismiss timer
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🎮 Custom Gestures
+| Gesture | Action |
+|---------|--------|
+| Single Tap | Volume Popup / Up / Down |
+| Double Tap | Mute / Settings / etc. |
+| Long Press | Customizable |
+
+</td>
+<td width="50%">
+
+### ⚙️ Dashboard & Settings
+- Live service status
+- Permission check
+- Battery optimization guide
+- Theme (System / Light / Dark)
+- Size, opacity, haptic feedback
+
+</td>
+</tr>
+</table>
 
 ---
 
-## Build & Run Instructions
+## 🛠️ Tech Stack
 
-### Requirements
-* Android Studio Ladybug or newer
-* Gradle 8.x / Android Gradle Plugin 9.x
-* Minimum SDK: Android 8.0 (API 26)
-* Target SDK: Android 15 / 16 (API 36)
+```
+┌─────────────────────────────────────────────┐
+│  Kotlin 2.2+  │  Jetpack Compose  │  MD3   │
+│  MVVM + Coroutines + StateFlow              │
+│  DataStore Preferences                      │
+│  AudioManager + ContentObserver             │
+│  WindowManager + ComposeView                │
+│  Room  │  Retrofit  │  Moshi                │
+│  Firebase AI  │  Roborazzi  │  KSP         │
+└─────────────────────────────────────────────┘
+```
 
-### Running in Android Studio
-1. Open the project folder in Android Studio.
-2. Let Gradle sync and download dependencies.
-3. Select an emulator or physical device running Android 8.0+.
-4. Click **Run** (`Shift + F10`).
-5. Grant the **"Display over other apps"** permission when prompted.
+---
+
+## 🚀 Quick Start
+
+```bash
+# Clone
+git clone https://github.com/rakibshorkar2/assistivetouch.git
+
+# Open in Android Studio Ladybug+
+# Sync Gradle → Run on device (API 26+)
+```
+
+| Step | Description |
+|------|-------------|
+| 1️⃣ | Open project in Android Studio |
+| 2️⃣ | Let Gradle sync dependencies |
+| 3️⃣ | Run on emulator / device (API 26+) |
+| 4️⃣ | Grant *Display over other apps* permission |
+
+---
+
+## 📱 APK Downloads
+
+> Auto-built releases are available on the [Releases](https://github.com/rakibshorkar2/assistivetouch/releases) page.
+
+---
+
+<div align="center">
+
+```
+   ██████╗  █████╗ ██╗  ██╗██╗██████╗
+   ██╔══██╗██╔══██╗██║ ██╔╝██║██╔══██╗
+   ██████╔╝███████║█████╔╝ ██║██████╔╝
+   ██╔══██╗██╔══██║██╔═██╗ ██║██╔══██╗
+   ██║  ██║██║  ██║██║  ██╗██║██████╔╝
+   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═════╝
+```
+
+**Developer — RAKIB**
+
+[![GitHub](https://img.shields.io/badge/GitHub-rakibshorkar2-181717?style=flat-square&logo=github)](https://github.com/rakibshorkar2)
+[![Release](https://img.shields.io/github/v/release/rakibshorkar2/assistivetouch?style=flat-square&logo=githubactions)](https://github.com/rakibshorkar2/assistivetouch/releases)
+
+*Built with ❤️ using Kotlin & Jetpack Compose*
+
+</div>
