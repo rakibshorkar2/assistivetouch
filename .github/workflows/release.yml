@@ -2,7 +2,7 @@ name: Auto Release on Push
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 permissions:
   contents: write
@@ -54,7 +54,7 @@ jobs:
           git add app/build.gradle.kts
           git commit -m "Bump version to ${{ steps.bump.outputs.versionName }} [skip ci]"
           git tag "v${{ steps.bump.outputs.versionName }}"
-          git push origin master --tags
+          git push origin main --tags
 
       - name: Setup Java
         uses: actions/setup-java@v4
