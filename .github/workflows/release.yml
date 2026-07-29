@@ -27,10 +27,17 @@ jobs:
 
           newVersionCode=$((versionCode + 1))
 
+          # Loop until we find a tag that doesn't exist yet
           IFS='.' read -r major minor patch <<< "$versionName"
           patch=${patch:-0}
-          newPatch=$((patch + 1))
-          newVersionName="$major.$minor.$newPatch"
+          while true; do
+            newPatch=$((patch + 1))
+            newVersionName="$major.$minor.$newPatch"
+            if ! git rev-parse "v$newVersionName" >/dev/null 2>&1; then
+              break
+            fi
+            patch=$newPatch
+          done
 
           echo "New: versionCode=$newVersionCode, versionName=$newVersionName"
 
@@ -45,7 +52,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add app/build.gradle.kts
-          git commit -m "Bump version to ${{ steps.bump.outputs.versionName }}"
+          git commit -m "Bump version to ${{ steps.bump.outputs.versionName }} [skip ci]"
           git tag "v${{ steps.bump.outputs.versionName }}"
           git push origin master --tags
 
