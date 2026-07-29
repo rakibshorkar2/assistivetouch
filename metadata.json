@@ -1,0 +1,6 @@
+{
+  "name": "Volume Assistant",
+  "description": "Floating volume assistant button with system audio overlay controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
