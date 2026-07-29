@@ -49,13 +49,22 @@ jobs:
           git tag "v${{ steps.bump.outputs.versionName }}"
           git push origin master --tags
 
-      - name: Build APK
-        run: |
-          echo "Building APK..."
-          # Uncomment the next line if you have a real build step:
-          # ./gradlew assembleRelease
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
 
-      - name: Create Release
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Prepare env for CI
+        run: cp .env.example .env
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK to Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.bump.outputs.versionName }}
@@ -65,4 +74,5 @@ jobs:
 
             - **Version:** ${{ steps.bump.outputs.versionName }}
             - **Version Code:** ${{ steps.bump.outputs.versionCode }}
+          files: app/build/outputs/apk/debug/*.apk
           generate_release_notes: true
