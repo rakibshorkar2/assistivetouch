@@ -68,6 +68,9 @@ jobs:
       - name: Prepare env for CI
         run: cp .env.example .env
 
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
