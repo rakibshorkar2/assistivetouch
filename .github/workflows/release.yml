@@ -68,6 +68,13 @@ jobs:
       - name: Prepare env for CI
         run: cp .env.example .env
 
+      - name: Generate debug keystore
+        run: keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=, OU=, O=, L=, S=, C="
+
+      - name: Create dummy google-services.json
+        run: |
+          echo '{"project_info":{"project_number":"0","project_id":"dummy"},"client":[{"client_info":{"mobilesdk_app_id":"1:0:android:000","android_client_info":{"package_name":"com.aistudio.volumeassistant.vctrl"}},"oauth_client":[],"api_key":[{"current_key":"dummy"}],"services":{"analytics_service":{"status":1},"appinvite_service":{"status":1},"ads_service":{"status":1}}}]}' > app/google-services.json
+
       - name: Make gradlew executable
         run: chmod +x gradlew
 
